@@ -32,6 +32,13 @@ const createField = (marker, harvest, type, oppositeField, nextField) => ({
 });
 
 const createBoard = () => {
+  lField = createField("l", 3, "field", null, null)
+  kField = createField("k", 2, "field", null, lField)
+
+  return kField
+}
+
+const createBoardV2 = () => {
   let firstField = null;
 
   return {
@@ -52,9 +59,11 @@ const createBoard = () => {
     },
 
     showBoard() {
-      for (int i = 0)
-        print(pointer.marker + " - " + str(pointer.harvest))
-        pointer = pointer.nextCell
+      console.log('showboard start')
+      console.log(firstField)
+    //   for (i = 0; i < 14; i++)
+    //     console.log(firstField.marker + " - " + firstField.harvest)
+    //     firstField = firstField.nextCell
     }
   }
 }
@@ -64,6 +73,13 @@ const createBoard = () => {
 field = "field"
 // opposite
 // next
+
+// board order
+// p2 store
+// a, b, c, d, e, f (left to right P1 fields)
+// p1 store
+// g, h, i, j, k, l (right to left P2 fields)
+// p2 store (board loop complete)
 const board = createBoard();
-board.append()
-board.append("k", 4, field, null, lField)
+
+console.log(board)
