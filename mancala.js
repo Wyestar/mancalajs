@@ -21,58 +21,45 @@ p2CaptureStats = [0, 0]
 
 commandListPrompt = "Enter 'help' for a list of commands."
 commandList = "show current board: 'show board' or exit menu: 'exit'"
-// show capture count: 'capture count'
 
-const createField = (marker, harvest, type, oppositeField, nextField) => ({
+const createField = (marker, harvest, type, captureCount, oppositeField, nextField) => ({
   marker,
   harvest,
   type,
+  captureCount,
   oppositeField,
   nextField
 });
 
 const createBoard = () => {
-  lField = createField("l", 3, "field", null, null)
-  kField = createField("k", 2, "field", null, lField)
+  lField = createField("l", 3, "field", 0, null, null)
+  kField = createField("k", 2, "field", 0, null, lField)
+  jField = createField("j", 0, "field", 0, null, kField)
+  iField = createField("i", 1, "field", 0, null, jField)
+  hField = createField("h", 1, "field", 0, null, iField)
+  gField = createField("g", 2, "field", 0, null, hField)
 
-  return kField
+  p1Store = createField("p1store", 1, "store", 0, null, gField)
+
+  fField = createField("f", 1, "field", 0, gField, p1Store)
+  eField = createField("e", 1, "field", 0, hField, fField)
+  dField = createField("d", 0, "field", 0, iField, eField)
+  cField = createField("c", 1, "field", 0, jField, dField)
+  bField = createField("b", 0, "field", 0, kField, cField)
+  aField = createField("a", 1, "field", 0, lField, bField)
+
+  p2Store = createField("p2store", 0, "store", 0, null, aField)
+
+  lField.oppositeField = aField
+  lField.nextField = p2Store
+  kField.oppositeField = bField
+  jField.oppositeField = cField
+  iField.oppositeField = dField
+  hField.oppositeField = eField
+  gField.oppositeField = fField
+
+  return aField
 }
-
-const createBoardV2 = () => {
-  let firstField = null;
-
-  return {
-    append(marker, harvest, type, opposite, next) {
-      const newField = createField(marker, harvest, type, opposite, next);
-
-      if (!firstField) {
-        head = createField("l", 4, "field", null, null);
-        return;
-      }
-
-      let currentField = firstField;
-      while (currentField.nextField !== null) {
-        currentField = currentField.nextField;
-      }
-      currentField.nextField = newField;
-
-    },
-
-    showBoard() {
-      console.log('showboard start')
-      console.log(firstField)
-    //   for (i = 0; i < 14; i++)
-    //     console.log(firstField.marker + " - " + firstField.harvest)
-    //     firstField = firstField.nextCell
-    }
-  }
-}
-
-// marker
-// harvest = 4
-field = "field"
-// opposite
-// next
 
 // board order
 // p2 store
@@ -80,6 +67,51 @@ field = "field"
 // p1 store
 // g, h, i, j, k, l (right to left P2 fields)
 // p2 store (board loop complete)
-const board = createBoard();
 
-console.log(board)
+
+const playerTurnLoop = (whosTurnIsIt, currentBoard) => {
+  // better way to loop through prompts besides double while?
+  let currentFields = p1Fields
+
+  // need input from user, toLowercase
+  let inputLowered = "a"
+
+  let playerInputIsNotValid = true
+
+  while (!playerInputIsNotValid) {
+    // check validity with array
+    const playIsValid = currentFields.contains(inputLowered)
+
+    let playerIsInHelpMenu = false
+
+    if (inputLowered === "help") {
+      playerIsInHelpMenu = true
+      while (playerIsInHelpMenu) {
+        // commands with switch/case?
+        if (inputLowered === "exit") {
+          playerIsInHelpMenu = false
+        }
+      }
+    } else if (!playIsValid) {
+      console.log("invalid field")
+      continue;
+    }
+  }
+}
+
+const mancalaStart = () => {
+  const board = createBoard();
+  // console.log(board)
+
+  // determine player order
+  // start player turn loop
+  // // check play validity
+  // // return next player
+  // check if game over
+
+
+  let whosTurnIsIt = p1
+  let gameIsOngoing = true
+
+
+}
